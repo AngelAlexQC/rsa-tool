@@ -84,131 +84,139 @@ $dataDecrypted = json_decode($decrypted);
     <title>
         Encriptacion y Desencriptacion con RSA y AES
     </title>
+    <style>
+        html {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: auto;
+        }
+
+        body {
+            margin: 0;
+            padding: 1rem;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        @media (min-width: 800px) {
+            main {
+                flex-direction: row;
+                width: 100%;
+            }
+        }
+
+        form {
+            padding: 1rem;
+            padding-top: 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            width: 100%;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 
 <body>
+    <h1>Encriptacion y Desencriptacion con RSA y AES</h1>
+    <main>
+        <form method="POST">
+            <h2>
+                Encriptación
+            </h2>
+            <div>
+                <label for="toEncrypt">Data a encriptar</label>
+                <textarea name="toEncrypt" id="toEncrypt" cols="30"
+                    rows="10"><?= json_encode($data, JSON_PRETTY_PRINT) ?></textarea>
+            </div>
+            <div>
+                <label for="publicKey">Llave publica</label>
+                <textarea name="publicKey" id="publicKey" cols="30" rows="10"><?= $publickey ?></textarea>
+            </div>
+            <div>
+                <label for="encrypted">Data encriptada</label>
+                <textarea name="encrypted" id="encrypted" cols="30" rows="10" readonly
+                    disabled><?= $newData ?></textarea>
+            </div>
 
+            <div>
+                <label for="sessionKey">Llave de sesion encriptada</label>
+                <textarea name="sessionKey" id="sessionKey" cols="30" rows="10" readonly
+                    disabled><?= $newSessionKey ?></textarea>
+            </div>
+
+            <div>
+                <label for="IV">IV encriptado</label>
+                <textarea name="IV" id="IV" cols="30" rows="10" readonly disabled><?= $newIV ?></textarea>
+            </div>
+
+            <button>
+                Encriptar
+            </button>
+
+        </form>
+
+        <form method="POST">
+
+            <h2>
+                Desencriptación
+            </h2>
+            <div>
+
+                <label for="toDecrypt">Session Key a desencriptar</label>
+                <textarea name="toDecrypt" id="toDecrypt" cols="30" rows="10"><?= $newSessionKey ?></textarea>
+            </div>
+
+            <div>
+                <label for="toDecryptIV">IV a desencriptar</label>
+                <textarea name="toDecryptIV" id="toDecryptIV" cols="30" rows="10"><?= $newIV ?></textarea>
+            </div>
+
+            <div>
+                <label for="toDecryptData">Data a desencriptar</label>
+                <textarea name="toDecryptData" id="toDecryptData" cols="30" rows="10"><?= $newData ?></textarea>
+            </div>
+
+            <div>
+                <label for="privateKey">Llave privada</label>
+                <textarea name="privateKey" id="privateKey" cols="30" rows="10"><?= $privateKey ?></textarea>
+            </div>
+
+            <div>
+                <label for="decryptedSessionKey">Llave de sesion desencriptada</label>
+                <textarea name="decryptedSessionKey" id="decryptedSessionKey" cols="30" rows="10" readonly
+                    disabled><?= $decriptedSessionKey ?></textarea>
+            </div>
+
+            <div>
+                <label for="decryptedIV">IV desencriptado</label>
+                <textarea name="decryptedIV" id="decryptedIV" cols="30" rows="10" readonly
+                    disabled><?= $IV ?></textarea>
+            </div>
+
+            <div>
+                <label for="decryptedData">Data desencriptada</label>
+                <textarea name="decryptedData" id="decryptedData" cols="30" rows="10" readonly
+                    disabled><?= json_encode($dataDecrypted, JSON_PRETTY_PRINT) ?></textarea>
+            </div>
+            <button>
+                Desencriptar
+            </button>
+        </form>
+    </main>
 </body>
 
 </html>
-<style>
-    html {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        overflow: auto;
-    }
-
-    main {
-        display: flex;
-        flex-direction: column;
-    }
-
-    @media (min-width: 800px) {
-        main {
-            flex-direction: row;
-            width: 100%;
-        }
-    }
-
-    form {
-        margin: 1rem;
-        padding: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-        width: 100%;
-    }
-
-    div {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 1rem;
-    }
-</style>
-<h1>Encriptacion y Desencriptacion con RSA y AES</h1>
-<main>
-    <form method="POST">
-        <h2>
-            Encriptación
-        </h2>
-        <div>
-            <label for="toEncrypt">Data a encriptar</label>
-            <textarea name="toEncrypt" id="toEncrypt" cols="30"
-                rows="10"><?= json_encode($data, JSON_PRETTY_PRINT) ?></textarea>
-        </div>
-        <div>
-            <label for="publicKey">Llave publica</label>
-            <textarea name="publicKey" id="publicKey" cols="30" rows="10"><?= $publickey ?></textarea>
-        </div>
-        <div>
-            <label for="encrypted">Data encriptada</label>
-            <textarea name="encrypted" id="encrypted" cols="30" rows="10" readonly disabled><?= $newData ?></textarea>
-        </div>
-
-        <div>
-            <label for="sessionKey">Llave de sesion encriptada</label>
-            <textarea name="sessionKey" id="sessionKey" cols="30" rows="10" readonly
-                disabled><?= $newSessionKey ?></textarea>
-        </div>
-
-        <div>
-            <label for="IV">IV encriptado</label>
-            <textarea name="IV" id="IV" cols="30" rows="10" readonly disabled><?= $newIV ?></textarea>
-        </div>
-
-        <button>
-            Encriptar
-        </button>
-
-    </form>
-
-    <form method="POST">
-
-        <h2>
-            Desencriptación
-        </h2>
-        <div>
-
-            <label for="toDecrypt">Session Key a desencriptar</label>
-            <textarea name="toDecrypt" id="toDecrypt" cols="30" rows="10"><?= $newSessionKey ?></textarea>
-        </div>
-
-        <div>
-            <label for="toDecryptIV">IV a desencriptar</label>
-            <textarea name="toDecryptIV" id="toDecryptIV" cols="30" rows="10"><?= $newIV ?></textarea>
-        </div>
-
-        <div>
-            <label for="toDecryptData">Data a desencriptar</label>
-            <textarea name="toDecryptData" id="toDecryptData" cols="30" rows="10"><?= $newData ?></textarea>
-        </div>
-
-        <div>
-            <label for="privateKey">Llave privada</label>
-            <textarea name="privateKey" id="privateKey" cols="30" rows="10"><?= $privateKey ?></textarea>
-        </div>
-
-        <div>
-            <label for="decryptedSessionKey">Llave de sesion desencriptada</label>
-            <textarea name="decryptedSessionKey" id="decryptedSessionKey" cols="30" rows="10" readonly
-                disabled><?= $decriptedSessionKey ?></textarea>
-        </div>
-
-        <div>
-            <label for="decryptedIV">IV desencriptado</label>
-            <textarea name="decryptedIV" id="decryptedIV" cols="30" rows="10" readonly disabled><?= $IV ?></textarea>
-        </div>
-
-        <div>
-            <label for="decryptedData">Data desencriptada</label>
-            <textarea name="decryptedData" id="decryptedData" cols="30" rows="10" readonly
-                disabled><?= json_encode($dataDecrypted, JSON_PRETTY_PRINT) ?></textarea>
-        </div>
-        <button>
-            Desencriptar
-        </button>
-    </form>
-</main>
