@@ -9,7 +9,7 @@ include ('Crypt/RSA.php');
 $rsa = new Crypt_RSA();
 $rsa->setPrivateKeyFormat(CRYPT_RSA_PRIVATE_FORMAT_PKCS1);
 $rsa->setPublicKeyFormat(CRYPT_RSA_PUBLIC_FORMAT_PKCS1);
-$keys = $rsa->createKey(4096);
+$keys = $rsa->createKey(2048);
 
 if (isset($_POST['publicKey']) || isset($_POST['privateKey'])) {
     $publickey = $_POST['publicKey'];
