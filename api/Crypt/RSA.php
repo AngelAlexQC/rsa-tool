@@ -99,7 +99,7 @@ if (!class_exists('Crypt_Hash')) {
  * @see Crypt_RSA::setHash()
  * @see Crypt_RSA::setMGFHash()
  */
-define('CRYPT_RSA_ENCRYPTION_OAEP',  1);
+define('CRYPT_RSA_ENCRYPTION_OAEP', 1);
 /**
  * Use PKCS#1 padding.
  *
@@ -123,7 +123,7 @@ define('CRYPT_RSA_ENCRYPTION_PKCS1', 2);
  * @see Crypt_RSA::setSaltLength()
  * @see Crypt_RSA::setMGFHash()
  */
-define('CRYPT_RSA_SIGNATURE_PSS',  1);
+define('CRYPT_RSA_SIGNATURE_PSS', 1);
 /**
  * Use the PKCS#1 scheme by default.
  *
@@ -140,11 +140,11 @@ define('CRYPT_RSA_SIGNATURE_PKCS1', 2);
 /**
  * ASN1 Integer
  */
-define('CRYPT_RSA_ASN1_INTEGER',     2);
+define('CRYPT_RSA_ASN1_INTEGER', 2);
 /**
  * ASN1 Bit String
  */
-define('CRYPT_RSA_ASN1_BITSTRING',   3);
+define('CRYPT_RSA_ASN1_BITSTRING', 3);
 /**
  * ASN1 Octet String
  */
@@ -152,11 +152,11 @@ define('CRYPT_RSA_ASN1_OCTETSTRING', 4);
 /**
  * ASN1 Object Identifier
  */
-define('CRYPT_RSA_ASN1_OBJECT',      6);
+define('CRYPT_RSA_ASN1_OBJECT', 6);
 /**
  * ASN1 Sequence (with the constucted bit set)
  */
-define('CRYPT_RSA_ASN1_SEQUENCE',   48);
+define('CRYPT_RSA_ASN1_SEQUENCE', 48);
 /**#@-*/
 
 /**#@+
@@ -487,20 +487,20 @@ class Crypt_RSA
     function __construct()
     {
         if (!class_exists('Math_BigInteger')) {
-            include_once 'Math/BigInteger.php';
+            include_once 'BigInteger.php';
         }
 
         $this->configFile = CRYPT_RSA_OPENSSL_CONFIG;
 
         if (!defined('CRYPT_RSA_MODE')) {
             switch (true) {
-                    // Math/BigInteger's openssl requirements are a little less stringent than Crypt/RSA's. in particular,
-                    // Math/BigInteger doesn't require an openssl.cfg file whereas Crypt/RSA does. so if Math/BigInteger
-                    // can't use OpenSSL it can be pretty trivially assumed, then, that Crypt/RSA can't either.
+                // Math/BigInteger's openssl requirements are a little less stringent than Crypt/RSA's. in particular,
+                // Math/BigInteger doesn't require an openssl.cfg file whereas Crypt/RSA does. so if Math/BigInteger
+                // can't use OpenSSL it can be pretty trivially assumed, then, that Crypt/RSA can't either.
                 case defined('MATH_BIGINTEGER_OPENSSL_DISABLE'):
                     define('CRYPT_RSA_MODE', CRYPT_RSA_MODE_INTERNAL);
                     break;
-                    // openssl_pkey_get_details - which is used in the only place Crypt/RSA.php uses OpenSSL - was introduced in PHP 5.2.0
+                // openssl_pkey_get_details - which is used in the only place Crypt/RSA.php uses OpenSSL - was introduced in PHP 5.2.0
                 case !function_exists('openssl_pkey_get_details'):
                     define('CRYPT_RSA_MODE', CRYPT_RSA_MODE_INTERNAL);
                     break;
@@ -599,7 +599,8 @@ class Crypt_RSA
             $publickey = call_user_func_array(array($this, '_convertPublicKey'), array_values($this->_parseKey($publickey, CRYPT_RSA_PUBLIC_FORMAT_PKCS1)));
 
             // clear the buffer of error strings stemming from a minimalistic openssl.cnf
-            while (openssl_error_string() !== false);
+            while (openssl_error_string() !== false)
+                ;
 
             return array(
                 'privatekey' => $privatekey,
@@ -650,13 +651,15 @@ class Crypt_RSA
                     if ($timeout <= 0) {
                         return array(
                             'privatekey' => '',
-                            'publickey'  => '',
-                            'partialkey' => serialize(array(
-                                'primes' => $primes,
-                                'coefficients' => $coefficients,
-                                'lcm' => $lcm,
-                                'exponents' => $exponents
-                            ))
+                            'publickey' => '',
+                            'partialkey' => serialize(
+                                array(
+                                    'primes' => $primes,
+                                    'coefficients' => $coefficients,
+                                    'lcm' => $lcm,
+                                    'exponents' => $exponents
+                                )
+                            )
                         );
                     }
                 }
@@ -676,17 +679,19 @@ class Crypt_RSA
                         $partialkey = '';
                     } else {
                         array_pop($primes);
-                        $partialkey = serialize(array(
-                            'primes' => $primes,
-                            'coefficients' => $coefficients,
-                            'lcm' => $lcm,
-                            'exponents' => $exponents
-                        ));
+                        $partialkey = serialize(
+                            array(
+                                'primes' => $primes,
+                                'coefficients' => $coefficients,
+                                'lcm' => $lcm,
+                                'exponents' => $exponents
+                            )
+                        );
                     }
 
                     return array(
                         'privatekey' => '',
-                        'publickey'  => '',
+                        'publickey' => '',
                         'partialkey' => $partialkey
                     );
                 }
@@ -734,7 +739,7 @@ class Crypt_RSA
 
         return array(
             'privatekey' => $this->_convertPrivateKey($n, $e, $d, $primes, $exponents, $coefficients),
-            'publickey'  => $this->_convertPublicKey($n, $e),
+            'publickey' => $this->_convertPublicKey($n, $e),
             'partialkey' => false
         );
     }
@@ -1383,8 +1388,8 @@ class Crypt_RSA
                         'comment' => $comment
                     );
                 }
-                // http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
-                // http://en.wikipedia.org/wiki/XML_Signature
+            // http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
+            // http://en.wikipedia.org/wiki/XML_Signature
             case CRYPT_RSA_PRIVATE_FORMAT_XML:
             case CRYPT_RSA_PUBLIC_FORMAT_XML:
                 $this->components = array();
@@ -1399,7 +1404,7 @@ class Crypt_RSA
                 }
 
                 return isset($this->components['modulus']) && isset($this->components['publicExponent']) ? $this->components : false;
-                // from PuTTY's SSHPUBK.C
+            // from PuTTY's SSHPUBK.C
             case CRYPT_RSA_PRIVATE_FORMAT_PUTTY:
                 $components = array();
                 $key = preg_split('#\r\n|\r|\n#', $key);
@@ -2912,7 +2917,7 @@ class Crypt_RSA
                     $ciphertext .= $this->_rsaes_pkcs1_v1_5_encrypt($m);
                 }
                 return $ciphertext;
-                //case CRYPT_RSA_ENCRYPTION_OAEP:
+            //case CRYPT_RSA_ENCRYPTION_OAEP:
             default:
                 $length = $this->k - 2 * $this->hLen - 2;
                 if ($length <= 0) {
@@ -2951,7 +2956,7 @@ class Crypt_RSA
             case CRYPT_RSA_ENCRYPTION_PKCS1:
                 $decrypt = '_rsaes_pkcs1_v1_5_decrypt';
                 break;
-                //case CRYPT_RSA_ENCRYPTION_OAEP:
+            //case CRYPT_RSA_ENCRYPTION_OAEP:
             default:
                 $decrypt = '_rsaes_oaep_decrypt';
         }
@@ -2984,7 +2989,7 @@ class Crypt_RSA
         switch ($this->signatureMode) {
             case CRYPT_RSA_SIGNATURE_PKCS1:
                 return $this->_rsassa_pkcs1_v1_5_sign($message);
-                //case CRYPT_RSA_SIGNATURE_PSS:
+            //case CRYPT_RSA_SIGNATURE_PSS:
             default:
                 return $this->_rsassa_pss_sign($message);
         }
@@ -3008,7 +3013,7 @@ class Crypt_RSA
         switch ($this->signatureMode) {
             case CRYPT_RSA_SIGNATURE_PKCS1:
                 return $this->_rsassa_pkcs1_v1_5_verify($message, $signature);
-                //case CRYPT_RSA_SIGNATURE_PSS:
+            //case CRYPT_RSA_SIGNATURE_PSS:
             default:
                 return $this->_rsassa_pss_verify($message, $signature);
         }
