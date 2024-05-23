@@ -11,12 +11,15 @@ $rsa->setPrivateKeyFormat(CRYPT_RSA_PRIVATE_FORMAT_PKCS1);
 $rsa->setPublicKeyFormat(CRYPT_RSA_PUBLIC_FORMAT_PKCS1);
 $keys = $rsa->createKey(2048);
 
-if (isset($_POST['publicKey']) || isset($_POST['privateKey'])) {
+$publickey = $keys['publickey'];
+$privateKey = $keys['privatekey'];
+
+if (isset($_POST['publicKey'])) {
     $publickey = $_POST['publicKey'];
+}
+
+if (isset($_POST['privateKey'])) {
     $privateKey = $_POST['privateKey'];
-} else {
-    $publickey = $keys['publickey'];
-    $privateKey = $keys['privatekey'];
 }
 
 $KeyRandom = (string) random_int(1111111111111111, 9999999999999999); // Número aleatorio
